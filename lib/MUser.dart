@@ -5,6 +5,7 @@ import 'HomePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'VUser.dart';
 
 class MUser extends StatefulWidget {
   @override
@@ -29,6 +30,13 @@ backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("USER"),
         backgroundColor: Color.fromARGB(255, 130, 224, 170),
+        leading: IconButton(icon: Icon(
+                  Icons.arrow_back), 
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => HomePage()));
+                  },
+                ),
       ),
 
         body: Column(
@@ -76,7 +84,7 @@ backgroundColor: Colors.white,
       children: <Widget>[
         ListTile(
           shape: RoundedRectangleBorder(side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)), borderRadius: BorderRadius.circular(2),),
-          title: Text('sitiaminah', style: TextStyle(fontWeight: FontWeight.bold),),
+          title: Text('arisyadzahier', style: TextStyle(fontWeight: FontWeight.bold),),
           subtitle: Column( mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('sitiahmad98@gmail.com'),
@@ -85,7 +93,13 @@ backgroundColor: Colors.white,
           ),
           trailing: Row( mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-                    Icon(Icons.arrow_circle_right_rounded), 
+                    IconButton(
+                onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => VUser()));
+                              }, 
+                icon: Icon(Icons.arrow_circle_right_rounded)
+              ), 
             ]),
         ),
         ListTile(

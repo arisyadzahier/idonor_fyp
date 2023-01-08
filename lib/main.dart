@@ -1,29 +1,45 @@
-// This is login page 
+// This is Main page 
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'package:fyp_application/services/auth.dart';
+import 'package:fyp_application/wrapper/wrapper.dart';
+import 'package:fyp_application/services/auth.dart';
 import 'HomePage.dart';
-import 'SignUpPage.dart';
+import 'authenticate/SignUpPage.dart';
+import 'authenticate/LoginPage.dart';
+import 'models/myuser.dart';
 
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return StreamProvider<MyUser?>.value(
+      initialData: null,
+      value: AuthService().user,
+      child: MaterialApp(
       debugShowCheckedModeBanner: false,
       home: LoginPage(),
+      ),
     );
   }
 }
 
-class LoginPage extends StatefulWidget {
+/*class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,27 +50,6 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Color.fromARGB(255, 130, 224, 170),
       ),
 
- /*   appBar: AppBar(),
-      body: ClipPath(
-        clipper: CurvedBottomClipper(),
-        child: Container(
-          color: Colors.lightGreen,
-          height: 250.0,
-          child: Center(
-              child: Padding(
-            padding: EdgeInsets.only(bottom: 50),
-            child: Text(
-              "Curved View",
-              style: TextStyle(
-                fontSize: 25,
-                color: Colors.white,
-              ),
-            ),
-          )),
-        ),
-      ), */
-
-
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -64,9 +59,6 @@ class _LoginPageState extends State<LoginPage> {
                 child: Container(
                     width: 200,
                     height: 150,
-                    /*decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),*/
                     child: Image.asset(
                       'assets/images/FYP_logo.png',
                       height: 150,
@@ -115,9 +107,16 @@ class _LoginPageState extends State<LoginPage> {
               decoration: BoxDecoration(
                   color: Color.fromARGB(255, 130, 224, 170), borderRadius: BorderRadius.circular(20)),
               child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => HomePage()));
+                onPressed: () async{
+                  /*Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => HomePage()));*/
+                      dynamic result = await _auth.signInAnon();
+                      if (result == null){
+                        print('error signing in');
+                      }else {
+                        print('signed in');
+                        print(result.uid);
+                      }
                 },
                 child: Text(
                   'SIGN IN',
@@ -168,9 +167,9 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-    );
+    ); 
   }
-}
+} */
 
 /*
 //Curved Shape Header

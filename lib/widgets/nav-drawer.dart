@@ -1,8 +1,14 @@
 //This is Side Navigation Bar at the top
 import 'package:flutter/material.dart';
-import 'package:fyp_application/main.dart';
+import 'package:fyp_application/HomePage.dart';
+import 'package:fyp_application/authenticate/LoginPage.dart';
+import 'package:fyp_application/edit_profile.dart';
+import 'package:fyp_application/services/auth.dart';
+ 
 
 class NavDrawer extends StatelessWidget {
+ final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -43,30 +49,33 @@ class NavDrawer extends StatelessWidget {
       
 
           ListTile(
-            leading: Icon(Icons.input),
+            leading: Icon(Icons.dashboard),
             title: Text('Dashboard'),
-            onTap: () => {},
+            onTap: () => {Navigator.pop(
+                      context, MaterialPageRoute(builder: (_) => HomePage()))},
           ),
           ListTile(
-            leading: Icon(Icons.verified_user),
-            title: Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
+            leading: Icon(Icons.people_sharp),
+            title: Text('Edit Profile'),
+            onTap: () => {Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => EditProfilePage()))},
           ),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
             onTap: () => {Navigator.of(context).pop()},
           ),
-          ListTile(
+         /* ListTile(
             leading: Icon(Icons.border_color),
             title: Text('Message'),
             onTap: () => {Navigator.of(context).pop()},
-          ),
+          ), */
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-                        onTap: () => {Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => LoginPage()))},
+                         onTap: () async{
+                          await _auth.signOut();
+                         }
           ),
         ],
       ),

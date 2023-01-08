@@ -30,11 +30,14 @@ class _HomePageState extends State<HomePage> {
       
   body: 
   Center(
+  child: SingleChildScrollView(
     child: Column(
        children: [
-SizedBox(
-              height: 50,
+        SizedBox(
+              height: 30,
             ),
+
+
 
         Text("Welcome Karim!", 
            textAlign: TextAlign.left,
@@ -190,12 +193,14 @@ SizedBox(
                 textAlign: TextAlign.center,
               ),  
             ),
-          ),  
+          ), 
+
     ],
 ),
-       ]
-)
-    )
+       ],
+),
+    ),
+  ),
     );
   }
 }

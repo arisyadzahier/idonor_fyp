@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:fyp_application/widgets/nav-drawer.dart';
 import 'HomePage.dart';
+import 'TCampaign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -24,11 +25,17 @@ class _MCampaign extends State<MCampaign> {
     return SafeArea(
       top: true,
       child: Scaffold(
-
-backgroundColor: Colors.white,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("CAMPAIGN"),
         backgroundColor: Color.fromARGB(255, 130, 224, 170),
+         leading: IconButton(icon: Icon(
+                  Icons.arrow_back), 
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => HomePage()));
+                  },
+                ),
       ),
 
         body: Column(
@@ -43,7 +50,7 @@ backgroundColor: Colors.white,
               child: TextButton(
                 onPressed: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => HomePage()));
+                      context, MaterialPageRoute(builder: (_) => TCampaign()));
                 },
                 child: Text(
                   'Add New Campaign',

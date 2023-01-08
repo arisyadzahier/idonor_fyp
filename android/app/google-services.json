@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "1020360781849",
+    "project_id": "idonor-user-fyp",
+    "storage_bucket": "idonor-user-fyp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020360781849:android:6459ac5ff5d8be5ec7fa88",
+        "android_client_info": {
+          "package_name": "com.example.fyp_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020360781849-o24f9v45egiud1g9iiasj4946fotenm6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSWCnhselnIu71uzwC7ULzvHq8ZnR51NI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020360781849-o24f9v45egiud1g9iiasj4946fotenm6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020360781849:android:80d6333a6173c184c7fa88",
+        "android_client_info": {
+          "package_name": "com.example.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020360781849-o24f9v45egiud1g9iiasj4946fotenm6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSWCnhselnIu71uzwC7ULzvHq8ZnR51NI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020360781849-o24f9v45egiud1g9iiasj4946fotenm6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

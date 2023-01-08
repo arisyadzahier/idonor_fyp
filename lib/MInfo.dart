@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:fyp_application/widgets/nav-drawer.dart';
 import 'HomePage.dart';
+import 'TInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -29,6 +30,13 @@ backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("INFORMATION"),
         backgroundColor: Color.fromARGB(255, 130, 224, 170),
+         leading: IconButton(icon: Icon(
+                  Icons.arrow_back), 
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => HomePage()));
+                  },
+                ),
       ),
 
         body: Column(
@@ -43,7 +51,7 @@ backgroundColor: Colors.white,
               child: TextButton(
                 onPressed: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => HomePage()));
+                      context, MaterialPageRoute(builder: (_) => TInfo()));
                 },
                 child: Text(
                   'Add New Information',

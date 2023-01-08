@@ -1,10 +1,13 @@
+//import 'dart:js';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:fyp_application/VeCard.dart';
 import 'package:fyp_application/widgets/nav-drawer.dart';
 import 'HomePage.dart';
 //import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter/rendering.dart';
+import 'package:dio/dio.dart';
 
 class MCard extends StatefulWidget {
   @override
@@ -21,43 +24,35 @@ class _MCard extends State<MCard> {
   }
 
   Widget _buildPage() {
-    return SafeArea(
-      top: true,
+    return WillPopScope(
+      onWillPop: (){
+        HomePage();
+        return throw ''; //or return something
+      },
+      //top: true,
       child: Scaffold(
-
-backgroundColor: Colors.white,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("eCard"),
         backgroundColor: Color.fromARGB(255, 130, 224, 170),
+        leading: IconButton(icon: Icon(
+          Icons.arrow_back), 
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) => HomePage()));
+          },
+        ),
       ),
 
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            /*Container(
-              margin: const EdgeInsets.only(top: 20.0),
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 130, 224, 170), borderRadius: BorderRadius.circular(20)),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => HomePage()));
-                },
-                child: Text(
-                  'Add New Campaign',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-            ), */
             Expanded(
               child: _buildList(),
             )
           ],
         ),
-      ),
-    );
+      ));
 
     Column(
       children: <Widget>[
@@ -65,6 +60,7 @@ backgroundColor: Colors.white,
         _buildList(),
       ],
     );
+     
   }
 
   Widget _buildList() {
@@ -77,7 +73,7 @@ backgroundColor: Colors.white,
         ListTile(
           shape: RoundedRectangleBorder(side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)), borderRadius: BorderRadius.circular(2),),
           leading: Icon(Icons.co_present),
-          title: Text('sitiaminah', style: TextStyle(fontWeight: FontWeight.bold),),
+          title: Text('arisyadzahier', style: TextStyle(fontWeight: FontWeight.bold),),
           subtitle: Column( mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('sitiahmad98@gmail.com'),
@@ -86,8 +82,16 @@ backgroundColor: Colors.white,
           ),
           trailing: Row( mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-                    Icon(Icons.arrow_circle_right_rounded),
-            ]),
+              IconButton(
+                onPressed: () {
+                 navigateToCard();
+                      //Navigator.of(context).push(MaterialPageRoute(
+                 // builder: (BuildContext context) => VeCard()));
+                              }, 
+                icon: Icon(Icons.arrow_circle_right_rounded)
+              ),      
+            ],
+            ),
         ),
         ListTile(
           shape: RoundedRectangleBorder(side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)), borderRadius: BorderRadius.circular(2),),
@@ -122,4 +126,16 @@ backgroundColor: Colors.white,
       ],
     );
   }
+
+
+void navigateToCard() {
+  Navigator.push(context, MaterialPageRoute(builder: (context){
+    return VeCard(); 
+                  }));
+}
+
+void moveToLastScreen(){
+  Navigator.pop(context);
+}
+
 }
