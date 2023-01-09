@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
- 
+
 void main() => runApp(const MyApp());
- 
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
- 
+
   static const String _title = 'Sample App';
- 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,18 +19,18 @@ class MyApp extends StatelessWidget {
     );
   }
 }
- 
+
 class MStatefulWidget extends StatefulWidget {
   const MStatefulWidget({Key? key}) : super(key: key);
- 
+
   @override
   State<MStatefulWidget> createState() => _MStatefulWidgetState();
 }
- 
+
 class _MStatefulWidgetState extends State<MStatefulWidget> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
- 
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -79,7 +79,9 @@ class _MStatefulWidgetState extends State<MStatefulWidget> {
               onPressed: () {
                 //forgot password screen
               },
-              child: const Text('Forgot Password',),
+              child: const Text(
+                'Forgot Password',
+              ),
             ),
             Container(
                 height: 50,
@@ -90,8 +92,7 @@ class _MStatefulWidgetState extends State<MStatefulWidget> {
                     print(nameController.text);
                     print(passwordController.text);
                   },
-                )
-            ),
+                )),
             Row(
               children: <Widget>[
                 const Text('Does not have account?'),

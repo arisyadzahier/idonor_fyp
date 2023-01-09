@@ -26,7 +26,7 @@ class _VeCardState extends State<VeCard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 130, 224, 170),        
+        backgroundColor: Color.fromARGB(255, 130, 224, 170),
         elevation: 1,
         leading: IconButton(
           icon: Icon(
@@ -34,11 +34,11 @@ class _VeCardState extends State<VeCard> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => MCard()));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (BuildContext context) => MCard()));
           },
         ),
-       /* actions: [
+        /* actions: [
           IconButton(
             icon: Icon(
               Icons.settings,
@@ -90,7 +90,7 @@ class _VeCardState extends State<VeCard> {
                                 'assets/images/eCard.jpeg',
                               ))),
                     ),
-                   /* Positioned(
+                    /* Positioned(
                         bottom: 0,
                         right: 0,
                         child: Container(

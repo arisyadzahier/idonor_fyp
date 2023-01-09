@@ -25,7 +25,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 130, 224, 170),        
+        backgroundColor: Color.fromARGB(255, 130, 224, 170),
         elevation: 1,
         leading: IconButton(
           icon: Icon(
@@ -34,10 +34,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => HomePage()));
+                builder: (BuildContext context) => HomePage()));
           },
         ),
-       /* actions: [
+        /* actions: [
           IconButton(
             icon: Icon(
               Icons.settings,
@@ -126,9 +126,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 children: [
                   OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
+                      padding: EdgeInsets.symmetric(horizontal: 50),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
                     ),
                     onPressed: () {},
                     child: Text("CANCEL",
@@ -140,14 +140,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => HomePage()));
+                          builder: (BuildContext context) => HomePage()));
                     },
                     style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
+                      primary: Colors.green,
+                      padding: EdgeInsets.symmetric(horizontal: 50),
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
                     ),
                     child: Text(
                       "SAVE",

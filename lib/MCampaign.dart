@@ -126,7 +126,8 @@ class _MCampaign extends State<MCampaign> {
                       Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                     Text(
                       snapshot.data?.docs[index]['status'],
-                      style: TextStyle(backgroundColor: Color.fromARGB(255, 225, 143, 170)),
+                      style: TextStyle(
+                          backgroundColor: Color.fromARGB(255, 225, 143, 170)),
                     ),
                     Icon(Icons.edit),
                     Icon(Icons.delete),

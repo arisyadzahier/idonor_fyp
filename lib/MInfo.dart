@@ -17,7 +17,7 @@ class MInfo extends StatefulWidget {
 }
 
 class _MInfo extends State<MInfo> {
- FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference informations =
       FirebaseFirestore.instance.collection('informations');
   Future<QuerySnapshot<Object?>>? docRef;
@@ -26,10 +26,12 @@ class _MInfo extends State<MInfo> {
     super.initState();
     docRef = informations.get();
   }
+
   Widget build(BuildContext context) {
     return _buildPage();
   }
-@override
+
+  @override
   Widget _buildPage() {
     return SafeArea(
       top: true,
@@ -91,7 +93,7 @@ class _MInfo extends State<MInfo> {
         print(snapshot.hasData);
         if (snapshot.hasData) {
           var x = snapshot.data?.docs.map((e) => print(e['name']));
-    return ListView.builder(
+          return ListView.builder(
             padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (BuildContext context, index) {
@@ -100,29 +102,31 @@ class _MInfo extends State<MInfo> {
                 child: ListTile(
                   visualDensity: VisualDensity(vertical: 4.0, horizontal: 0.5),
                   contentPadding: EdgeInsets.all(5.0),
-          shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)),
-            borderRadius: BorderRadius.circular(2),
-          ),
-          title: Text(
-            snapshot.data?.docs[index]['title'],
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(snapshot.data?.docs[index]['message']),
-            ],
-          ),
-          trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            Icon(Icons.edit),
-            Icon(Icons.delete),
-          ]),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                        width: 1, color: Color.fromARGB(255, 57, 56, 56)),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  title: Text(
+                    snapshot.data?.docs[index]['title'],
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(snapshot.data?.docs[index]['message']),
+                    ],
+                  ),
+                  trailing:
+                      Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                    Icon(Icons.edit),
+                    Icon(Icons.delete),
+                  ]),
                 ),
               );
-          },
-        );
+            },
+          );
         }
         return Text("data");
       },

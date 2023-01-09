@@ -239,10 +239,8 @@ class _TCampaign extends State<TCampaign> {
                       ),
                       contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                       trailing: DropdownButtonHideUnderline(
-                          
                           child: DropdownButton<String>(
                         hint: Text("Choose Status"),
-                        
                         value: dropdownValue,
                         icon: const Icon(Icons.arrow_drop_down_circle_outlined),
                         elevation: 20,
@@ -281,8 +279,13 @@ class _TCampaign extends State<TCampaign> {
                   onPressed: () {
                     CollectionReference campaigns =
                         FirebaseFirestore.instance.collection('campaigns');
-                    campaigns.add(Campaigns(campaignName.text, dateinput.text,
-                            startInput.text, endInput.text, location.text, status.text)
+                    campaigns.add(Campaigns(
+                            campaignName.text,
+                            dateinput.text,
+                            startInput.text,
+                            endInput.text,
+                            location.text,
+                            status.text)
                         .toMap());
                     Navigator.push(context,
                         MaterialPageRoute(builder: (_) => MCampaign()));

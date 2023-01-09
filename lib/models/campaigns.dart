@@ -1,17 +1,23 @@
 import 'package:intl/intl.dart';
 
 class Campaigns {
-  Campaigns.fromJson(Map<String,dynamic> map){
-    campaignName : map['name'];
-    date : map['date'];
-    start : map['start'];
-    end: map['end'];
-    location:map['location'];
-    status:map['status'];
+  Campaigns.fromJson(Map<String, dynamic> map) {
+    campaignName:
+    map['name'];
+    date:
+    map['date'];
+    start:
+    map['start'];
+    end:
+    map['end'];
+    location:
+    map['location'];
+    status:
+    map['status'];
   }
-  Campaigns(this.campaignName, this.date, this.startTime,this.endTime,this.location,this.status);
-  
-  
+  Campaigns(this.campaignName, this.date, this.startTime, this.endTime,
+      this.location, this.status);
+
   String? campaignName = "";
   late String date = DateTime.now().toString();
   late String? startTime = DateTime.now().toString();
@@ -19,8 +25,8 @@ class Campaigns {
   String? location = "";
   String? status = "";
 
-
   Map<String, dynamic> toMap() {
+    //take the saved values in your local variables and can return a Map.
     return {
       'name': campaignName,
       'date': date,
