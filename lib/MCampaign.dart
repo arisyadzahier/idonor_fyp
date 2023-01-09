@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp_application/widgets/nav-drawer.dart';
 import 'HomePage.dart';
@@ -16,6 +17,16 @@ class MCampaign extends StatefulWidget {
 }
 
 class _MCampaign extends State<MCampaign> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference campaigns =
+      FirebaseFirestore.instance.collection('campaigns');
+  Future<QuerySnapshot<Object?>>? docRef;
+  @override
+  void initState() {
+    super.initState();
+    docRef = campaigns.get();
+  }
+
   @override
   Widget build(BuildContext context) {
     return _buildPage();
@@ -25,19 +36,18 @@ class _MCampaign extends State<MCampaign> {
     return SafeArea(
       top: true,
       child: Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("CAMPAIGN"),
-        backgroundColor: Color.fromARGB(255, 130, 224, 170),
-         leading: IconButton(icon: Icon(
-                  Icons.arrow_back), 
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => HomePage()));
-                  },
-                ),
-      ),
-
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Text("CAMPAIGN"),
+          backgroundColor: Color.fromARGB(255, 130, 224, 170),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => HomePage()));
+            },
+          ),
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -46,7 +56,8 @@ class _MCampaign extends State<MCampaign> {
               height: 50,
               width: 250,
               decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 130, 224, 170), borderRadius: BorderRadius.circular(20)),
+                  color: Color.fromARGB(255, 130, 224, 170),
+                  borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 onPressed: () {
                   Navigator.push(
@@ -75,65 +86,58 @@ class _MCampaign extends State<MCampaign> {
   }
 
   Widget _buildList() {
-    
-    return ListView(
-      //itemExtent: 100.0, 
-      //shrinkWrap: true,  
-      padding: const EdgeInsets.fromLTRB(8, 20, 8, 8),   
-      children: <Widget>[
-        ListTile(
-          shape: RoundedRectangleBorder(side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)), borderRadius: BorderRadius.circular(2),),
-          title: Text('Lets Donate Blood', style: TextStyle(fontWeight: FontWeight.bold),),
-          subtitle: Column( mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('17/6/2022'),
-              Text('0900 - 1700'),
-              Text('SHAHS Mosque IIUM'),
-            ],
-          ),
-          trailing: Row( mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-                    
-                    Text('ON GOING', style: TextStyle(backgroundColor: Colors.green),),
-                    Icon(Icons.edit), 
+    return FutureBuilder(
+      future: docRef,
+      builder: (BuildContext context, snapshot) {
+        print(snapshot);
+        print(snapshot.hasData);
+        if (snapshot.hasData) {
+          var x = snapshot.data?.docs.map((e) => print(e['name']));
+          // return Text("${snapshot.data?.docs.length} + ${snapshot.data?.docs[0]['name']}");
+          return ListView.builder(
+            padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (BuildContext context, index) {
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ListTile(
+                  visualDensity: VisualDensity(vertical: 4.0, horizontal: 0.5),
+                  contentPadding: EdgeInsets.all(5.0),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                        width: 1, color: Color.fromARGB(255, 57, 56, 56)),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  title: Text(
+                    snapshot.data?.docs[index]['name'],
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(snapshot.data?.docs[index]['date']),
+                      Text(
+                          '${snapshot.data?.docs[index]['start']} - ${snapshot.data?.docs[0]['end']}'),
+                      Text(snapshot.data?.docs[index]['location']),
+                    ],
+                  ),
+                  trailing:
+                      Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                    Text(
+                      snapshot.data?.docs[index]['status'],
+                      style: TextStyle(backgroundColor: Color.fromARGB(255, 225, 143, 170)),
+                    ),
+                    Icon(Icons.edit),
                     Icon(Icons.delete),
-            ]),
-        ),
-        ListTile(
-          shape: RoundedRectangleBorder(side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)), borderRadius: BorderRadius.circular(2),),
-          title: Text('Lets Donate Blood', style: TextStyle(fontWeight: FontWeight.bold),),
-          subtitle: Column( mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('17/6/2022'),
-              Text('0900 - 1700'),
-              Text('SHAHS Mosque IIUM'),
-            ],
-          ),
-           trailing: Row( mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-                    Text('COMING SOON', style: TextStyle(backgroundColor: Colors.blue),),
-                    Icon(Icons.edit), 
-                    Icon(Icons.delete),
-            ]),
-        ),
-        ListTile(
-          shape: RoundedRectangleBorder(side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)), borderRadius: BorderRadius.circular(2),),
-          title: Text('Lets Donate Blood', style: TextStyle(fontWeight: FontWeight.bold),),
-          subtitle: Column( mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('17/6/2022'),
-              Text('0900 - 1700'),
-              Text('SHAHS Mosque IIUM'),
-            ],
-         ),
-           trailing: Row( mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-                    Text('FINISHED', style: TextStyle(backgroundColor: Colors.orange),),
-                    Icon(Icons.edit), 
-                    Icon(Icons.delete),
-            ]),
-        ),
-      ],
+                  ]),
+                ),
+              );
+            },
+          );
+        }
+        return Text("data");
+      },
     );
   }
 }

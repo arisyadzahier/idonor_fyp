@@ -60,11 +60,11 @@ class NavDrawer extends StatelessWidget {
             onTap: () => {Navigator.push(
                       context, MaterialPageRoute(builder: (_) => EditProfilePage()))},
           ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.settings),
+          //   title: Text('Settings'),
+          //   onTap: () => {Navigator.of(context).pop()},
+          // ),
          /* ListTile(
             leading: Icon(Icons.border_color),
             title: Text('Message'),
@@ -75,6 +75,9 @@ class NavDrawer extends StatelessWidget {
             title: Text('Logout'),
                          onTap: () async{
                           await _auth.signOut();
+                          
+                          Navigator.pushReplacement(
+                          context, MaterialPageRoute(builder: (context) => LoginPage()));
                          }
           ),
         ],

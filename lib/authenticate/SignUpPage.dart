@@ -58,36 +58,27 @@ class _SignUpPageState extends State<SignUpPage> {
 
             // name, position, email, password, confirm password
             Padding(
-             // padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Name',
-                    hintText: 'Enter First Name and Last Name'),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),              //padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.only(left:15.0,right: 15.0,top:15,bottom: 0), 
               child: Form(
-                key: _formKey,
-              child: TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Position'),
-              ),
-              ),
-            ),
-            
-            Padding(
-              padding: const EdgeInsets.only(left:15.0,right: 15.0,top:15,bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
-              child: Form(
-                key: _formKey,
-              child: TextFormField(
-                validator: (String? value) {
+                key: _formKey, 
+                child: Column(
+                  children: [
+                    //NAME 
+                    TextFormField(
+                      decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Name',
+                      hintText: 'Enter First Name and Last Name'),
+                    ),
+                    //POSITION
+                    TextFormField(
+                      decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Position'),
+                    ),
+                    //EMAIL
+                    TextFormField(
+                      validator: (String? value) {
                     if (value!.isEmpty){
                       return "Email cannot be empty";
                     }
@@ -100,16 +91,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     border: OutlineInputBorder(),
                     labelText: 'Email',
                     hintText: 'Enter valid email id as abc@gmail.com'),
-              ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-               child: Form(
-                key: _formKey,
-              child: TextFormField(
-                obscureText: true,
+                    ),
+                    //PASSWORD
+                    TextFormField(
+                      obscureText: true,
                 validator: (String? value){
                     if(value!.length < 6){
                       return "Password >6 chars long";
@@ -123,40 +108,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                     hintText: 'Enter secure password'),
-              ),
-               ),
-            ),
+                    ),
 
-          /*  Padding(
-              padding: const EdgeInsets.only(left:15.0,right: 15.0,top:15,bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
-               child: Form(
-                key: _formKey,
-              child: TextFormField(
-                obscureText: true,
-                validator: (val) => val!.length < 6 ? 'Enter password more than 6 char long' : null,
-                 onChanged: (val){
-                    setState(() => password = val);
-                  },
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Confirm Password',
-                    hintText: 'Enter same password'),
-              ),
-               ),
-            ),*/
-            
-            SizedBox(
-              height: 10,
-            ),
-
+                  ],
+                ),)),
             //Sign Up Button
-            Container(
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 130, 224, 170), borderRadius: BorderRadius.circular(20)),
-              child: TextButton(
+            ElevatedButton(
                onPressed: () async{
                   /*Navigator.push(
                       context, MaterialPageRoute(builder: (_) => HomePage()));*/
@@ -167,12 +124,14 @@ class _SignUpPageState extends State<SignUpPage> {
                         }             
                      }
                },
+                style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 130, 224, 170),), 
                 child: Text(
                   'REGISTER',
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
-            ),
+            
            
             SizedBox(
               height: 20.0,

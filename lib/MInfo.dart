@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:fyp_application/widgets/nav-drawer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'HomePage.dart';
 import 'TInfo.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,29 +17,35 @@ class MInfo extends StatefulWidget {
 }
 
 class _MInfo extends State<MInfo> {
+ FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference informations =
+      FirebaseFirestore.instance.collection('informations');
+  Future<QuerySnapshot<Object?>>? docRef;
   @override
+  void initState() {
+    super.initState();
+    docRef = informations.get();
+  }
   Widget build(BuildContext context) {
     return _buildPage();
   }
-
+@override
   Widget _buildPage() {
     return SafeArea(
       top: true,
       child: Scaffold(
-
-backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("INFORMATION"),
-        backgroundColor: Color.fromARGB(255, 130, 224, 170),
-         leading: IconButton(icon: Icon(
-                  Icons.arrow_back), 
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => HomePage()));
-                  },
-                ),
-      ),
-
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Text("INFORMATION"),
+          backgroundColor: Color.fromARGB(255, 130, 224, 170),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => HomePage()));
+            },
+          ),
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -47,7 +54,8 @@ backgroundColor: Colors.white,
               height: 50,
               width: 250,
               decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 130, 224, 170), borderRadius: BorderRadius.circular(20)),
+                  color: Color.fromARGB(255, 130, 224, 170),
+                  borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 onPressed: () {
                   Navigator.push(
@@ -76,61 +84,48 @@ backgroundColor: Colors.white,
   }
 
   Widget _buildList() {
-    
-    return ListView(
-      //itemExtent: 100.0, 
-      //shrinkWrap: true,  
-      padding: const EdgeInsets.fromLTRB(8, 20, 8, 8),   
-      children: <Widget>[
-        ListTile(
-          shape: RoundedRectangleBorder(side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)), borderRadius: BorderRadius.circular(2),),
-          title: Text('Before Donating Blood', style: TextStyle(fontWeight: FontWeight.bold),),
-          subtitle: Column( mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
+    return FutureBuilder(
+      future: docRef,
+      builder: (BuildContext context, snapshot) {
+        print(snapshot);
+        print(snapshot.hasData);
+        if (snapshot.hasData) {
+          var x = snapshot.data?.docs.map((e) => print(e['name']));
+    return ListView.builder(
+            padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (BuildContext context, index) {
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ListTile(
+                  visualDensity: VisualDensity(vertical: 4.0, horizontal: 0.5),
+                  contentPadding: EdgeInsets.all(5.0),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)),
+            borderRadius: BorderRadius.circular(2),
+          ),
+          title: Text(
+            snapshot.data?.docs[index]['title'],
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('You should.....'),
-              Text('................'),
-              Text('.................'),
+              Text(snapshot.data?.docs[index]['message']),
             ],
           ),
-          trailing: Row( mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-                    Icon(Icons.edit), 
-                    Icon(Icons.delete),
-            ]),
-        ),
-        ListTile(
-          shape: RoundedRectangleBorder(side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)), borderRadius: BorderRadius.circular(2),),
-          title: Text('During Donating Blood', style: TextStyle(fontWeight: FontWeight.bold),),
-          subtitle: Column( mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Drink a lot of water'),
-              Text('Wear a shirt with sleeves that.....'),
-              Text('Stay calm'),
-            ],
-          ),
-           trailing: Row( mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-                    Icon(Icons.edit), 
-                    Icon(Icons.delete),
-            ]),
-        ),
-        ListTile(
-          shape: RoundedRectangleBorder(side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)), borderRadius: BorderRadius.circular(2),),
-          title: Text('After Donating Blood', style: TextStyle(fontWeight: FontWeight.bold),),
-          subtitle: Column( mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Relax for a few minute'),
-              Text('Enjoy snacks ad sweet drinks'),
-              Text('Do not lift heavy things.'),
-            ],
-         ),
-           trailing: Row( mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-                    Icon(Icons.edit), 
-                    Icon(Icons.delete),
-            ]),
-        ),
-      ],
+          trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+            Icon(Icons.edit),
+            Icon(Icons.delete),
+          ]),
+                ),
+              );
+          },
+        );
+        }
+        return Text("data");
+      },
     );
   }
 }

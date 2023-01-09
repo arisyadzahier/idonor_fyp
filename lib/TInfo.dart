@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fyp_application/MCampaign.dart';
+import 'package:fyp_application/MInfo.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fyp_application/models/informations.dart';
 
-const List<String> list = <String>['On Going', 'Coming Soon', 'Finished'];
 
 void main() {
   runApp(MyApp()); 
@@ -26,18 +28,18 @@ class TInfo extends StatefulWidget{
 }
 
 class _TInfo extends State<TInfo>{
-  TextEditingController dateinput = TextEditingController(); 
-  TextEditingController timeinput = TextEditingController();
+  TextEditingController informationTitle= TextEditingController(); 
+  TextEditingController informationMessage = TextEditingController();
   
-  var dropdownValue; 
-  //text editing controller for text field
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   
   @override
-  void initState() {
-    dateinput.text = ""; //set the initial value of text field
-    timeinput.text = ""; //set the initial value of text field
-    super.initState();
-  }
+  // void initState() {
+  //   dateinput.text = ""; //set the initial value of text field
+  //   timeinput.text = ""; //set the initial value of text field
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +65,7 @@ class _TInfo extends State<TInfo>{
              // padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
+                controller: informationTitle,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     //icon: Icon(Icons.title_outlined),
@@ -82,6 +85,7 @@ class _TInfo extends State<TInfo>{
                   ),
                   Expanded(
                     child: TextField(
+                      controller: informationMessage,
                       decoration: InputDecoration(labelText: 'Enter Message', border: OutlineInputBorder()),
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
@@ -90,26 +94,51 @@ class _TInfo extends State<TInfo>{
                   ),
 
                   // CAMERA
-                Padding(padding: EdgeInsets.symmetric(horizontal: 15),
-                child: IconButton(
-                  icon: Icon(Icons.camera_alt_outlined), 
-                  alignment: Alignment.bottomLeft,
+                // Padding(padding: EdgeInsets.symmetric(horizontal: 15),
+                // child: IconButton(
+                //   icon: Icon(Icons.camera_alt_outlined), 
+                //   alignment: Alignment.bottomLeft,
+                //   onPressed: () {
+                //       print("Icon Button clicked");
+                //     },
+                // ),
+                // ),
+
+
+                  // ElevatedButton(
+                  //   onPressed: () {},
+                  //   style: ElevatedButton.styleFrom(
+                  //   primary: Color.fromARGB(255, 130, 224, 170)),
+                  //   child: const Text(
+                  //     'SAVE NEW INFORMATION',
+                  //     style: TextStyle(fontSize: 24, color: Colors.white),
+                  //   ),
+                  // ),
+
+
+                  //BUTTON SAVE INFORMATION
+                  Container(
+                margin: const EdgeInsets.only(top: 20.0),
+                height: 50,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 130, 224, 170),
+                    borderRadius: BorderRadius.circular(20)),
+                child: TextButton(
                   onPressed: () {
-                      print("Icon Button clicked");
-                    },
-                ),
-                ),
-
-
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                    primary: Color.fromARGB(255, 130, 224, 170)),
-                    child: const Text(
-                      'SAVE',
-                      style: TextStyle(fontSize: 24, color: Colors.white),
-                    ),
+                    CollectionReference informations =
+                        FirebaseFirestore.instance.collection('informations');
+                    informations.add(Informations(informationTitle.text, informationMessage.text)
+                        .toMap());
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => MInfo()));
+                  },
+                  child: Text(
+                    'Save New Information',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
+                ),
+              ),
                 ],
               ),
             ),
