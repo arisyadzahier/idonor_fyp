@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'VUser.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MUser extends StatefulWidget {
   @override
@@ -16,6 +17,15 @@ class MUser extends StatefulWidget {
 }
 
 class _MUser extends State<MUser> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  Future<QuerySnapshot<Object?>>? docRef;
+  @override
+  void initState() {
+    super.initState();
+    docRef = users.get();
+  }
+
   @override
   Widget build(BuildContext context) {
     return _buildPage();
@@ -74,80 +84,53 @@ class _MUser extends State<MUser> {
   }
 
   Widget _buildList() {
-    return ListView(
-      //itemExtent: 100.0,
-      //shrinkWrap: true,
-      padding: const EdgeInsets.fromLTRB(8, 20, 8, 8),
-      children: <Widget>[
-        ListTile(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)),
-            borderRadius: BorderRadius.circular(2),
-          ),
-          title: Text(
-            'arisyadzahier',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('sitiahmad98@gmail.com'),
-              Text('Last visit: 23/12/2022'),
-            ],
-          ),
-          trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => VUser()));
-                },
-                icon: Icon(Icons.arrow_circle_right_rounded)),
-          ]),
-        ),
-        ListTile(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)),
-            borderRadius: BorderRadius.circular(2),
-          ),
-          title: Text(
-            'sitiaminah',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('sitiahmad98@gmail.com'),
-              Text('Last visit: 23/12/2022'),
-            ],
-          ),
-          trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            Icon(Icons.arrow_circle_right_rounded),
-          ]),
-        ),
-        ListTile(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)),
-            borderRadius: BorderRadius.circular(2),
-          ),
-          title: Text(
-            'sitiaminah',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('sitiahmad98@gmail.com'),
-              Text('Last visit: 23/12/2022'),
-            ],
-          ),
-          trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            Icon(Icons.arrow_circle_right_rounded),
-          ]),
-        ),
-      ],
+    return FutureBuilder(
+      future: docRef,
+      builder: (BuildContext context, snapshot) {
+        print(snapshot);
+        print(snapshot.hasData);
+        if (snapshot.hasData) {
+          var x = snapshot.data?.docs.map((e) => print(e['name']));
+          return ListView.builder(
+            padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (BuildContext context, index) {
+              return Padding(padding: EdgeInsets.all(8.0), 
+                child: ListTile(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                        width: 1, color: Color.fromARGB(255, 57, 56, 56)),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  title: Text(
+                    snapshot.data?.docs[index]['username'],
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(snapshot.data?.docs[index]['email']),
+                      Text(snapshot.data?.docs[index]['name']),
+                    ],
+                  ),
+                  trailing:
+                      Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                    IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => VUser()));
+                        },
+                        icon: Icon(Icons.arrow_circle_right_rounded)),
+                  ]),
+                ),
+
+              );
+            },
+          );
+        }
+        return Text("data");
+      },
     );
   }
 }

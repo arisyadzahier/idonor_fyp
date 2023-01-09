@@ -119,10 +119,10 @@ class _LoginPageState extends State<LoginPage> {
                                   dynamic result =
                                       await _auth.signInWithEmailAndPassword(
                                           email, password);
-                                  // Navigator.pushReplacement(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //       builder: (_) => HomePage()));
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => HomePage()));
                                   if (result == null) {
                                     setState(() {
                                       error = 'Could not Sign In';
@@ -131,14 +131,14 @@ class _LoginPageState extends State<LoginPage> {
                                   }
                                 }
 
-                                // dynamic result = await _auth.signInAnon();
-                                // if (result == null) {
-                                //   print('error signing in');
-                                // } else {
-                                //   print('signed in');
-                                //   print(result.uid);
-                                // }
-                              },
+                              //   dynamic result = await _auth.signInAnon();
+                              //   if (result == null) {
+                              //     print('error signing in');
+                              //   } else {
+                              //     print('signed in');
+                              //     print(result.uid);
+                              //   }
+                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
                                     Color.fromARGB(255, 130, 224, 170),
@@ -149,15 +149,6 @@ class _LoginPageState extends State<LoginPage> {
                                     color: Colors.white, fontSize: 25),
                               ),
                             ),
-                            SizedBox(
-                              height: 20.0,
-                            ),
-                            Text(
-                              error,
-                              style:
-                                  TextStyle(color: Colors.red, fontSize: 14.0),
-                            ),
-
                             //TO SignUpPage.dart
                             TextButton(
                               onPressed: () {
@@ -171,11 +162,6 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                       )),
-                  // SizedBox(height: 20.0,),
-                  // Text(
-                  //   error,
-                  //   style: TextStyle(color: Colors.red, fontSize: 14.0),
-                  // ),
                 ],
               ),
             ),

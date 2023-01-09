@@ -26,7 +26,6 @@ class Campaigns {
   String? status = "";
 
   Map<String, dynamic> toMap() {
-    //take the saved values in your local variables and can return a Map.
     return {
       'name': campaignName,
       'date': date,

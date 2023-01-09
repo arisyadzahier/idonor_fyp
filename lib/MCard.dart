@@ -8,6 +8,7 @@ import 'HomePage.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter/rendering.dart';
 import 'package:dio/dio.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MCard extends StatefulWidget {
   @override
@@ -18,6 +19,15 @@ class MCard extends StatefulWidget {
 }
 
 class _MCard extends State<MCard> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  Future<QuerySnapshot<Object?>>? docRef;
+  @override
+  void initState() {
+    super.initState();
+    docRef = users.get();
+  }
+
   @override
   Widget build(BuildContext context) {
     return _buildPage();
@@ -62,97 +72,66 @@ class _MCard extends State<MCard> {
   }
 
   Widget _buildList() {
-    return ListView(
-      //itemExtent: 100.0,
-      //shrinkWrap: true,
-      padding: const EdgeInsets.fromLTRB(8, 20, 8, 8),
-      children: <Widget>[
-        ListTile(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)),
-            borderRadius: BorderRadius.circular(2),
-          ),
-          leading: Icon(Icons.co_present),
-          title: Text(
-            'arisyadzahier',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('sitiahmad98@gmail.com'),
-              Text('Last visit: 23/12/2022'),
-            ],
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              IconButton(
-                  onPressed: () {
-                    navigateToCard();
-                    //Navigator.of(context).push(MaterialPageRoute(
-                    // builder: (BuildContext context) => VeCard()));
-                  },
-                  icon: Icon(Icons.arrow_circle_right_rounded)),
-            ],
-          ),
-        ),
-        ListTile(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)),
-            borderRadius: BorderRadius.circular(2),
-          ),
-          leading: Icon(Icons.co_present),
-          title: Text(
-            'sitiaminah',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('sitiahmad98@gmail.com'),
-              Text('Last visit: 23/12/2022'),
-            ],
-          ),
-          trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            Icon(Icons.arrow_circle_right_rounded),
-          ]),
-        ),
-        ListTile(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1, color: Color.fromARGB(255, 57, 56, 56)),
-            borderRadius: BorderRadius.circular(2),
-          ),
-          leading: Icon(Icons.co_present),
-          title: Text(
-            'sitiaminah',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('sitiahmad98@gmail.com'),
-              Text('Last visit: 23/12/2022'),
-            ],
-          ),
-          trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            Icon(Icons.arrow_circle_right_rounded),
-          ]),
-        ),
-      ],
+    return FutureBuilder(
+      future: docRef,
+      builder: (BuildContext context, snapshot) {
+        print(snapshot);
+        print(snapshot.hasData);
+        if (snapshot.hasData) {
+          var x = snapshot.data?.docs.map((e) => print(e['name']));
+          return ListView.builder(
+            padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (BuildContext context, index) {
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ListTile(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                        width: 1, color: Color.fromARGB(255, 57, 56, 56)),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  leading: Icon(Icons.co_present),
+                  title: Text(
+                    snapshot.data?.docs[index]['name'],
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(snapshot.data?.docs[index]['email']),
+                      Text(snapshot.data?.docs[index]['icnum']),
+                    ],
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      IconButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) => VeCard()));
+                          },
+                          icon: Icon(Icons.arrow_circle_right_rounded)),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        }
+        return Text("data");
+      },
     );
   }
 
-  void navigateToCard() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return VeCard();
-    }));
-  }
+  // void navigateToCard() {
+  //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //     return VeCard();
+  //   }));
+  // }
 
-  void moveToLastScreen() {
-    Navigator.pop(context);
-  }
+  // void moveToLastScreen() {
+  //   Navigator.pop(context);
+  // }
 }

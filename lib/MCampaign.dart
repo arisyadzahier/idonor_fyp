@@ -1,9 +1,11 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp_application/UpdateCampaign.dart';
 import 'package:fyp_application/widgets/nav-drawer.dart';
 import 'HomePage.dart';
 import 'TCampaign.dart';
+import 'UpdateCampaign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -126,10 +128,12 @@ class _MCampaign extends State<MCampaign> {
                       Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                     Text(
                       snapshot.data?.docs[index]['status'],
-                      style: TextStyle(
-                          backgroundColor: Color.fromARGB(255, 225, 143, 170)),
+                      style: TextStyle(backgroundColor: Color.fromARGB(255, 225, 143, 170)),
                     ),
-                    Icon(Icons.edit),
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: (){UpdateCampaign();}
+                    ),
                     Icon(Icons.delete),
                   ]),
                 ),

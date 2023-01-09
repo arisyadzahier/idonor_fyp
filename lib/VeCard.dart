@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp_application/HomePage.dart';
 import 'package:fyp_application/widgets/nav-drawer.dart';
 import 'package:fyp_application/MCard.dart';
-//import 'package:settings_ui/pages/settings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SettingsUI extends StatelessWidget {
   @override
@@ -22,10 +22,21 @@ class VeCard extends StatefulWidget {
 
 class _VeCardState extends State<VeCard> {
   bool showPassword = false;
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  Future<QuerySnapshot<Object?>>? docRef;
+  @override
+  void initState() {
+    super.initState();
+    docRef = users.get();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('eCard'),
         backgroundColor: Color.fromARGB(255, 130, 224, 170),
         elevation: 1,
         leading: IconButton(
@@ -38,136 +49,78 @@ class _VeCardState extends State<VeCard> {
                 MaterialPageRoute(builder: (BuildContext context) => MCard()));
           },
         ),
-        /* actions: [
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: Colors.green,
-            ),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => NavDrawer()));
-            },
-          ),
-        ], */
       ),
-      body: Container(
-        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: ListView(
-            children: [
-              Text(
-                " ",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Center(
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 200,
-                      height: 130,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor),
-                          boxShadow: [
-                            BoxShadow(
-                                spreadRadius: 2,
-                                blurRadius: 10,
-                                color: Colors.black.withOpacity(0.1),
-                                offset: Offset(0, 10))
-                          ],
-                          //shape: BoxShape.circle,
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                'assets/images/eCard.jpeg',
-                              ))),
-                    ),
-                    /* Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                            ),
-                            color: Colors.green,
-                          ),
-                          child: Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                          ),
-                        )), */
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 35,
-              ),
-              buildTextField("Name", "Arisya Dzahier", false),
-              buildTextField("Username", "arisyadzahier", false),
-              buildTextField("E-mail", "alexd@gmail.com", false),
-              buildTextField("Phone Number", "0123456789", false),
-              buildTextField("ID Number", "980519024444", false),
-              buildTextField("Blood Type", "AB", false),
-              buildTextField("Weight", "54kg", false),
-              buildTextField("Donate Since", "17/9/2018", false),
-              SizedBox(
-                height: 35,
-              ),
-              /* Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    ),
-                    onPressed: () {},
-                    child: Text("CANCEL",
-                        style: TextStyle(
-                            fontSize: 14,
-                            letterSpacing: 2.2,
-                            color: Colors.black)),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => HomePage()));
-                    },
-                    style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    ),
-                    child: Text(
-                      "SAVE",
-                      style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.white),
-                    ),
-                  )
-                ],
-              ) */
-            ],
-          ),
+      body: _buildList(),
+    );
+
+    Column(
+      children: <Widget>[ 
+        Column(
+          children: [
+            Image(image: AssetImage('assets/images/eCard.jpeg')),
+          ],
         ),
-      ),
+        //  _buildBox(),
+        _buildList(),
+      ],
+    );
+  }
+
+  Widget _buildList() {
+    return FutureBuilder(
+      future: docRef,
+      builder: (BuildContext context, snapshot) {
+        print(snapshot);
+        print(snapshot.hasData);
+        if (snapshot.hasData) {
+          var x = snapshot.data?.docs.map((e) => print(e['name']));
+          return ListView.builder(
+              padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+              itemCount: snapshot.data?.docs.length,
+              itemBuilder: (BuildContext context, index) {
+                return Padding(
+                  padding: EdgeInsets.all(8.0),
+                  // DecorationImage(
+                  //             fit: BoxFit.cover,
+                  //             image: AssetImage(
+                  //               'assets/images/eCard.jpeg',
+                  //             )),
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    children: [
+                      // const Image(image: AssetImage('assets/images/eCard.jpeg')),
+                      Text(
+                        " ",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
+                      ),
+
+                      SizedBox(
+                        height: 25,
+                      ),
+                      buildTextField(
+                          "Name", snapshot.data?.docs[index]['name'], false),
+                      buildTextField("Username",
+                          snapshot.data?.docs[index]['username'], false),
+                      buildTextField(
+                          "E-mail", snapshot.data?.docs[index]['email'], false),
+                      buildTextField("Phone Number",
+                          snapshot.data?.docs[index]['phone'], false),
+                      buildTextField("ID Number",
+                          snapshot.data?.docs[index]['icnum'], false),
+                      buildTextField("Blood Type",
+                          snapshot.data?.docs[index]['bloodType'], false),
+                      buildTextField("Weight",
+                          snapshot.data?.docs[index]['weight'], false),
+                      //buildTextField("Donate Since", "17/9/2018", false),
+                    ],
+                  ),
+                );
+              });
+        }
+        return Text("data");
+      },
     );
   }
 

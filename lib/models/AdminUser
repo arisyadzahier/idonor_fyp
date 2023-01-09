@@ -1,0 +1,19 @@
+import 'package:intl/intl.dart';
+
+class AdminUser {
+  AdminUser.fromJson(Map<String,dynamic> map){
+    adminEmail : map['email'];
+    
+  }
+  Campaigns(this.adminEmail);
+  
+  
+  String? adminEmail = "";
+  
+
+  Map<String, dynamic> toMap() {
+    return {
+      'email': adminEmail,
+    };
+  }
+}

@@ -3,6 +3,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:fyp_application/HomePage.dart';
 import 'package:fyp_application/widgets/nav-drawer.dart';
 import 'package:fyp_application/MUser.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SettingsUI extends StatelessWidget {
   @override
@@ -21,6 +22,15 @@ class VUser extends StatefulWidget {
 }
 
 class _VUserState extends State<VUser> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  Future<QuerySnapshot<Object?>>? docRef;
+  @override
+  void initState() {
+    super.initState();
+    docRef = users.get();
+  }
+
   bool showPassword = false;
   @override
   Widget build(BuildContext context) {
@@ -39,191 +49,218 @@ class _VUserState extends State<VUser> {
           },
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: ListView(
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            children: [
-              Text(
-                " ",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              ),
+      body: _buildList(),
+    );
 
-              SizedBox(
-                height: 35,
-              ),
-              buildTextField("Name", "Arisya Dzahier", false),
-              buildTextField("Username", "arisyadzahier", false),
-              buildTextField("E-mail", "arisyad@gmail.com", false),
-              buildTextField("Phone Number", "0123456789", false),
-              SizedBox(
-                height: 20,
-              ),
+    Column(
+      children: <Widget>[
+        //  _buildBox(),
+        _buildList(),
+      ],
+    );
+  }
 
-              //Title
-              DottedBorder(
-                color: Colors.greenAccent,
-                strokeWidth: 2,
-                dashPattern: [
-                  5,
-                  5,
-                ],
-                child: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  /*decoration: BoxDecoration(
+  Widget _buildList() {
+    return FutureBuilder(
+      future: docRef,
+      builder: (BuildContext context, snapshot) {
+        print(snapshot);
+        print(snapshot.hasData);
+        if (snapshot.hasData) {
+          var x = snapshot.data?.docs.map((e) => print(e['name']));
+          return ListView.builder(
+              padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+              itemCount: snapshot.data?.docs.length,
+              itemBuilder: (BuildContext context, index) {
+                return Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    children: [
+                      Text(
+                        " ",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
+                      ),
+
+                      SizedBox(
+                        height: 35,
+                      ),
+                      buildTextField(
+                          "Name", snapshot.data?.docs[index]['name'], false),
+                      buildTextField("Username",
+                          snapshot.data?.docs[index]['username'], false),
+                      buildTextField(
+                          "E-mail", snapshot.data?.docs[index]['email'], false),
+                      buildTextField("Phone Number",
+                          snapshot.data?.docs[index]['phone'], false),
+                      SizedBox(
+                        height: 20,
+                      ),
+
+                      //Title
+                      DottedBorder(
+                        color: Colors.greenAccent,
+                        strokeWidth: 2,
+                        dashPattern: [
+                          5,
+                          5,
+                        ],
+                        child: Container(
+                          padding: const EdgeInsets.all(16.0),
+                          /*decoration: BoxDecoration(
                   border: Border.all(width: 2,),
                 ),*/
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: const Text(
-                      "Blood Donation History",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                ),
-              ),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: const Text(
+                              "Blood Donation History",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                          ),
+                        ),
+                      ),
 
-              SizedBox(
-                height: 10,
-              ),
+                      SizedBox(
+                        height: 10,
+                      ),
 
-              //Details of Blood Donation History
-              Card(
-                margin: EdgeInsets.all(5.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  side: BorderSide(
-                    color: Colors.blueGrey,
+                      //Details of Blood Donation History
+                      Card(
+                        margin: EdgeInsets.all(5.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          side: BorderSide(
+                            color: Colors.blueGrey,
+                          ),
+                        ),
+                        color: Colors.white,
+                        child: ListView(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          children: [
+                            ListTile(
+                              title: Text('Campaign:'),
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Date:'),
+                                  Text('Location:'),
+                                  Text('Serial No of Blood Pack:'),
+                                  Text('Amount Donated:'),
+                                ],
+                              ),
+                            ),
+                            Divider(
+                              height: 20,
+                            ),
+                            ListTile(
+                              title: Text('Campaign:'),
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Date:'),
+                                  Text('Location:'),
+                                  Text('Serial No of Blood Pack:'),
+                                  Text('Amount Donated:'),
+                                ],
+                              ),
+                            ),
+                            Divider(
+                              height: 20,
+                            ),
+                            ListTile(
+                              title: Text('Campaign:'),
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Date:'),
+                                  Text('Location:'),
+                                  Text('Serial No of Blood Pack:'),
+                                  Text('Amount Donated:'),
+                                ],
+                              ),
+                            ),
+                            Divider(
+                              height: 20,
+                            ),
+                            ListTile(
+                              title: Text('Campaign:'),
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Date:'),
+                                  Text('Location:'),
+                                  Text('Serial No of Blood Pack:'),
+                                  Text('Amount Donated:'),
+                                ],
+                              ),
+                            ),
+                            Divider(
+                              height: 20,
+                            ),
+                            ListTile(
+                              title: Text('Campaign:'),
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Date:'),
+                                  Text('Location:'),
+                                  Text('Serial No of Blood Pack:'),
+                                  Text('Amount Donated:'),
+                                ],
+                              ),
+                            ),
+                            Divider(
+                              height: 20,
+                            ),
+                            ListTile(
+                              title: Text('Campaign:'),
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Date:'),
+                                  Text('Location:'),
+                                  Text('Serial No of Blood Pack:'),
+                                  Text('Amount Donated:'),
+                                ],
+                              ),
+                            ),
+                            Divider(
+                              height: 20,
+                            ),
+                            ListTile(
+                              title: Text('Campaign:'),
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Date:'),
+                                  Text('Location:'),
+                                  Text('Serial No of Blood Pack:'),
+                                  Text('Amount Donated:'),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                color: Colors.white,
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    ListTile(
-                      title: Text('Campaign:'),
-                      subtitle: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Date:'),
-                          Text('Location:'),
-                          Text('Serial No of Blood Pack:'),
-                          Text('Amount Donated:'),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      height: 20,
-                    ),
-                    ListTile(
-                      title: Text('Campaign:'),
-                      subtitle: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Date:'),
-                          Text('Location:'),
-                          Text('Serial No of Blood Pack:'),
-                          Text('Amount Donated:'),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      height: 20,
-                    ),
-                    ListTile(
-                      title: Text('Campaign:'),
-                      subtitle: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Date:'),
-                          Text('Location:'),
-                          Text('Serial No of Blood Pack:'),
-                          Text('Amount Donated:'),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      height: 20,
-                    ),
-                    ListTile(
-                      title: Text('Campaign:'),
-                      subtitle: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Date:'),
-                          Text('Location:'),
-                          Text('Serial No of Blood Pack:'),
-                          Text('Amount Donated:'),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      height: 20,
-                    ),
-                    ListTile(
-                      title: Text('Campaign:'),
-                      subtitle: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Date:'),
-                          Text('Location:'),
-                          Text('Serial No of Blood Pack:'),
-                          Text('Amount Donated:'),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      height: 20,
-                    ),
-                    ListTile(
-                      title: Text('Campaign:'),
-                      subtitle: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Date:'),
-                          Text('Location:'),
-                          Text('Serial No of Blood Pack:'),
-                          Text('Amount Donated:'),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      height: 20,
-                    ),
-                    ListTile(
-                      title: Text('Campaign:'),
-                      subtitle: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Date:'),
-                          Text('Location:'),
-                          Text('Serial No of Blood Pack:'),
-                          Text('Amount Donated:'),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+                );
+              });
+        }
+        return Text("data");
+      },
     );
   }
 

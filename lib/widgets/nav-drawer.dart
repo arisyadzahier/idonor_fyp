@@ -4,33 +4,42 @@ import 'package:fyp_application/HomePage.dart';
 import 'package:fyp_application/authenticate/LoginPage.dart';
 import 'package:fyp_application/edit_profile.dart';
 import 'package:fyp_application/services/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NavDrawer extends StatelessWidget {
   final AuthService _auth = AuthService();
+  
 
   @override
   Widget build(BuildContext context) {
+    
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero, //remove padding
         children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Text(
-              'Karim',
+              '',
               style: TextStyle(color: Colors.black, fontSize: 25),
             ),
             accountEmail: Text(
-              'karim@idonor.com',
+              '',
               style: TextStyle(color: Colors.black, fontSize: 18),
             ),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Material(
-                  color: Color.fromARGB(255, 176, 226, 197),
-                  child: Icon(
-                    Icons.account_circle_outlined,
-                    color: Colors.white,
-                    size: 75.0,
+                  // color: Color.fromARGB(255, 176, 226, 197),
+                  child: Image.asset(
+                            'assets/images/FYP_logo.png',
+                            height: 250,
+                            width: 300,
+                            fit: BoxFit.fitWidth,
+                          
+                  // child: Icon(
+                  //   Icons.account_circle_outlined,
+                  //   color: Colors.white,
+                  //   size: 75.0,
                     /*fit: BoxFit.cover,
                   width: 90,
                   height: 90,*/
